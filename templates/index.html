@@ -1,1 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>TIET AI College Assistant</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+
+        .student-info {
+            background: #f5f6ff;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .student-info h3 {
+            margin: 5px 0;
+            color: #4b4ded;
+        }
+
+        .student-info p {
+            margin: 5px 0;
+            color: #666;
+        }
+
+        .top-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .top-buttons a {
+            padding: 9px 14px;
+            border-radius: 8px;
+            text-decoration: none;
+            color: white;
+            font-size: 14px;
+        }
+
+        .history-button {
+            background: #4b4ded;
+        }
+
+        .logout-button {
+            background: #e74c3c;
+        }
+
+        .login-area {
+            text-align: center;
+            margin: 20px;
+        }
+
+        .login-button {
+            display: inline-block;
+            padding: 10px 18px;
+            background: #4b4ded;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+        }
+
+        /* TYPING ANIMATION */
+
+        .typing {
+            display: inline-flex;
+            gap: 5px;
+            padding: 10px 15px;
+        }
+
+        .typing span {
+            width: 7px;
+            height: 7px;
+            background: #777;
+            border-radius: 50%;
+            animation: typing 1.2s infinite;
+        }
+
+        .typing span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .typing span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes typing {
+
+            0%, 60%, 100% {
+                transform: translateY(0);
+            }
+
+            30% {
+                transform: translateY(-5px);
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="chat-container">
+
+
+    <!-- HEADER -->
+
+    <div class="header">
+
+        <div class="bot-icon">
+            🤖
+        </div>
+
+        <div>
+
+            <h1>
+                TIET AI Assistant
+            </h1>
+
+            <p>
+                Tagore Institute of Engineering and Technology
+            </p>
+
+        </div>
+
+        <span class="online">
+            ● Online
+        </span>
+
+    </div>
+
+
+    <!-- STUDENT LOGIN INFORMATION -->
+
+    {% if session.get("student_id") %}
+
+    <div class="student-info">
+
+        <h3>
+            👋 Welcome, {{ session.get("student_name") }}
+        </h3>
+
+        <p>
+            📧 {{ session.get("student_email") }}
+        </p>
+
+    </div>
+
+
+    <!-- STUDENT BUTTONS -->
+
+    <div class="top-buttons">
+
+        <a href="/history"
+           class="history-button">
+
+            📜 Chat History
+
+        </a>
+
+        <a href="/logout"
+           class="logout-button">
+
+            🚪 Logout
+
+        </a>
+
+    </div>
+
+    {% endif %}
+
+
+    <!-- CHAT AREA -->
+
+    <div id="chat-box"
+         class="chat-box">
+
+        <div class="bot-message">
+
+            <div class="message-title">
+                🤖 AI Assistant
+            </div>
+
+            Hello! 👋
+
+            <br><br>
+
+            Welcome to
+            <b>
+                Tagore Institute of Engineering and Technology
+            </b>.
+
+            <br><br>
+
+            How can I help you today? 😊
+
+        </div>
+
+    </div>
+
+
+    <!-- QUICK QUESTIONS -->
+
+    <div class="quick-questions">
+
+        <p>
+            💡 Quick Questions
+        </p>
+
+
+        <button
+            onclick="quickMessage('College timing enna?')">
+
+            🕐 College Timing
+
+        </button>
+
+
+        <button
+            onclick="quickMessage('CSE HOD yaaru?')">
+
+            👩‍🏫 CSE HOD
+
+        </button>
+
+
+        <button
+            onclick="quickMessage('CSE faculty yaaru?')">
+
+            👨‍🏫 Faculty
+
+        </button>
+
+
+        <button
+            onclick="quickMessage('Library timing enna?')">
+
+            📚 Library
+
+        </button>
+
+
+        <button
+            onclick="quickMessage('Placement details sollu')">
+
+            💼 Placement
+
+        </button>
+
+
+        <button
+            onclick="quickMessage('Hostel irukka?')">
+
+            🏠 Hostel
+
+        </button>
+
+
+        <button
+            onclick="quickMessage('Admission details sollu')">
+
+            📝 Admission
+
+        </button>
+
+
+        <button
+            onclick="quickMessage('College contact details sollu')">
+
+            📞 Contact
+
+        </button>
+
+    </div>
+
+
+    <!-- INPUT AREA -->
+
+    <div class="input-area">
+
+
+        <input
+            type="text"
+            id="user-input"
+            placeholder="Ask me anything about the college..."
+            autocomplete="off"
+        >
+
+
+        <button
+            onclick="startVoice()"
+            class="voice-button">
+
+            🎤
+
+        </button>
+
+
+        <button
+            onclick="sendMessage()"
+            class="send-button">
+
+            ➤
+
+        </button>
+
+
+    </div>
+
+
+    <!-- LOGIN BUTTON FOR NON-LOGGED STUDENTS -->
+
+    {% if not session.get("student_id") %}
+
+    <div class="login-area">
+
+        <a href="/login"
+           class="login-button">
+
+            👨‍🎓 Student Login
+
+        </a>
+
+    </div>
+
+    {% endif %}
+
+
+    <!-- FOOTER -->
+
+    <div class="footer">
+
+        AI College Assistant • TIET
+
+    </div>
+
+
+</div>
+
+
+<!-- JAVASCRIPT -->
+
+<script src="{{ url_for('static', filename='script.js') }}">
+</script>
+
+
+</body>
+
+</html>
