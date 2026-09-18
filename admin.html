@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Admin Panel</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #eef2ff, #f8f9ff);
+        }
+
+        .container {
+            width: 900px;
+            max-width: 94%;
+            margin: 35px auto;
+        }
+
+        .header {
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.10);
+        }
+
+        .header h1 {
+            margin: 0;
+        }
+
+        .header p {
+            color: #777;
+        }
+
+        .box {
+            background: white;
+            padding: 30px;
+            margin-top: 25px;
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+        }
+
+        .box h2 {
+            margin-top: 0;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-top: 18px;
+            margin-bottom: 7px;
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            padding: 13px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 15px;
+            outline: none;
+        }
+
+        textarea {
+            min-height: 90px;
+            resize: vertical;
+        }
+
+        input:focus,
+        textarea:focus {
+            border-color: #4b4ded;
+        }
+
+        .save-button {
+            width: 100%;
+            padding: 14px;
+            margin-top: 25px;
+            border: none;
+            border-radius: 10px;
+            background: #4b4ded;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .save-button:hover {
+            opacity: 0.9;
+        }
+
+        .message {
+            display: none;
+            margin-top: 15px;
+            padding: 12px;
+            background: #e8f8ee;
+            color: #218838;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .buttons {
+            text-align: center;
+            margin-top: 25px;
+        }
+
+        .buttons a {
+            display: inline-block;
+            padding: 12px 18px;
+            margin: 5px;
+            background: #4b4ded;
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+        }
+
+        .logout {
+            background: #e74c3c !important;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+    <!-- HEADER -->
+
+    <div class="header">
+
+        <h1>
+            🛠️ Admin Panel
+        </h1>
+
+        <p>
+            Tagore Institute of Engineering and Technology
+        </p>
+
+    </div>
+
+
+    <!-- COLLEGE INFORMATION -->
+
+    <div class="box">
+
+        <h2>
+            🏫 Update College Information
+        </h2>
+
+
+        <label>
+            ⏰ College Timing
+        </label>
+
+        <input
+            type="text"
+            id="timing"
+            value="The college working hours are from 09:15 AM to 04:30 PM."
+        >
+
+
+        <label>
+            👩‍🏫 CSE HOD
+        </label>
+
+        <input
+            type="text"
+            id="hod"
+            value="The CSE Head of the Department is Kokila Mam."
+        >
+
+
+        <label>
+            📚 Library
+        </label>
+
+        <input
+            type="text"
+            id="library"
+            value="Library working hours are from 09:00 AM to 05:00 PM."
+        >
+
+
+        <label>
+            💼 Placement
+        </label>
+
+        <textarea
+            id="placement"
+        >The placement cell provides aptitude training, soft-skill training, technical training and interview preparation.</textarea>
+
+
+        <label>
+            📝 Admission
+        </label>
+
+        <textarea
+            id="admission"
+        >Admissions are available for eligible students. For course availability, eligibility and admission procedures, please contact the college admission office.</textarea>
+
+
+        <label>
+            📞 Contact
+        </label>
+
+        <textarea
+            id="contact"
+        >Tagore Institute of Engineering and Technology, College Office. Phone: 04182-XXXXXX. Email: info@tagoreengineering.example</textarea>
+
+
+        <button
+            class="save-button"
+            onclick="updateInformation()"
+        >
+            💾 Save Information
+        </button>
+
+
+        <div
+            id="message"
+            class="message"
+        ></div>
+
+
+    </div>
+
+
+    <!-- NAVIGATION -->
+
+    <div class="buttons">
+
+        <a href="/dashboard">
+            📊 Dashboard
+        </a>
+
+        <a href="/">
+            🤖 Chatbot
+        </a>
+
+        <a href="/admin-logout"
+           class="logout">
+            🚪 Logout
+        </a>
+
+    </div>
+
+
+</div>
+
+
+<script>
+
+function updateInformation() {
+
+    let timing =
+        document.getElementById("timing").value;
+
+    let hod =
+        document.getElementById("hod").value;
+
+    let library =
+        document.getElementById("library").value;
+
+    let placement =
+        document.getElementById("placement").value;
+
+    let admission =
+        document.getElementById("admission").value;
+
+    let contact =
+        document.getElementById("contact").value;
+
+
+    fetch("/update-info", {
+
+        method: "POST",
+
+        headers: {
+            "Content-Type": "application/json"
+        },
+
+        body: JSON.stringify({
+
+            timing: timing,
+            hod: hod,
+            library: library,
+            placement: placement,
+            admission: admission,
+            contact: contact
+
+        })
+
+    })
+
+    .then(response => response.json())
+
+    .then(data => {
+
+        let message =
+            document.getElementById("message");
+
+        message.innerText =
+            data.message;
+
+        message.style.display = "block";
+
+    })
+
+    .catch(error => {
+
+        let message =
+            document.getElementById("message");
+
+        message.innerText =
+            "Something went wrong ❌";
+
+        message.style.display = "block";
+
+    });
+
+}
+
+</script>
+
+
+</body>
+
+</html>
