@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>My Chat History</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #eef2ff, #f8f9ff);
+        }
+
+        .container {
+            width: 900px;
+            max-width: 94%;
+            margin: 40px auto;
+        }
+
+        .header {
+            background: white;
+            padding: 25px;
+            border-radius: 18px;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            margin-bottom: 25px;
+        }
+
+        .header h1 {
+            margin: 0;
+            color: #333;
+        }
+
+        .header p {
+            color: #777;
+            margin-bottom: 0;
+        }
+
+        .chat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.07);
+            border-left: 5px solid #4b4ded;
+        }
+
+        .question {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .answer {
+            color: #555;
+            line-height: 1.6;
+        }
+
+        .time {
+            margin-top: 12px;
+            color: #999;
+            font-size: 12px;
+        }
+
+        .empty {
+            background: white;
+            padding: 40px;
+            text-align: center;
+            border-radius: 15px;
+            color: #888;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.07);
+        }
+
+        .buttons {
+            text-align: center;
+            margin-top: 25px;
+        }
+
+        .buttons a {
+            display: inline-block;
+            padding: 11px 18px;
+            margin: 5px;
+            border-radius: 9px;
+            text-decoration: none;
+            color: white;
+            background: #4b4ded;
+        }
+
+        .buttons .logout {
+            background: #e74c3c;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="container">
+
+
+    <div class="header">
+
+        <h1>
+            📜 My Chat History
+        </h1>
+
+        <p>
+            Previous questions and answers
+        </p>
+
+    </div>
+
+
+    {% if chats %}
+
+        {% for chat in chats %}
+
+        <div class="chat-card">
+
+            <div class="question">
+
+                👤 Question:
+
+                {{ chat["question"] }}
+
+            </div>
+
+
+            <div class="answer">
+
+                🤖 Answer:
+
+                {{ chat["answer"] }}
+
+            </div>
+
+
+            <div class="time">
+
+                🕐 {{ chat["created_at"] }}
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <div class="empty">
+
+            📭 No chat history available yet.
+
+            <br><br>
+
+            Start asking questions in the AI Assistant!
+
+        </div>
+
+    {% endif %}
+
+
+    <div class="buttons">
+
+        <a href="/">
+            🤖 Back to Chatbot
+        </a>
+
+        <a href="/logout" class="logout">
+            🚪 Logout
+        </a>
+
+    </div>
+
+
+</div>
+
+</body>
+
+</html>
